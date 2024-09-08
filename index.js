@@ -48,6 +48,9 @@ app.use(
 
 // Connecting to Cloudinary
 cloudinaryConnect();
+app.get("/",(req,res)=>{
+  res.send("tezting production api")
+})
 
 // Import and mount routes
 const user = require("./routes/user");
