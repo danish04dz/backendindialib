@@ -13,29 +13,26 @@ const PORT = process.env.PORT || 4000;
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
-// Define allowed origins for CORS
+
+
 const allowedOrigins = [
-  "http://localhost:5173",  // Local development
-  "https://indialib.netlify.app/",  // Production frontend
+  "http://localhost:5173",  // For local development
+  "https://indialib.netlify.app"  // Netlify production frontend
 ];
 
-// CORS options
 const corsOptions = {
   origin: function (origin, callback) {
-    // Check if the origin is in the allowedOrigins array or if no origin (for non-browser clients)
     if (allowedOrigins.includes(origin) || !origin) {
       callback(null, true);
     } else {
       callback(new Error("Not allowed by CORS"));
     }
   },
-  methods: ["POST", "GET", "PUT"],
   credentials: true,
 };
 
-// Use CORS middleware with the updated options
 app.use(cors(corsOptions));
-app.use(express.json());
+
 
 require("./config/database").connect();
 
