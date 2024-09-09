@@ -53,6 +53,11 @@ app.get("/", (req, res) => {
 const user = require("./routes/user");
 app.use("/api/v1", user);
 
+
+// Import and mount routes
+const findlibrary = require("./routes/findlibrary");
+app.use("/api/v1/find", findlibrary);
+
 const profileRoutes = require("./routes/profile");
 app.use("/api/v1/profile", profileRoutes);
 

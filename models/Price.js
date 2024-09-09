@@ -4,7 +4,7 @@ const priceSchema = new mongoose.Schema({
     libraryId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Library",
-        required: true
+      
     },
     
    
@@ -12,7 +12,8 @@ const priceSchema = new mongoose.Schema({
         oneHour: {
             type: Number,
             required: true,
-            min: 0,  // Optional: You can set a minimum value
+            min: 0, 
+             // Optional: You can set a minimum value
         },
         twoHours: {
             type: Number,

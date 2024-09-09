@@ -18,7 +18,7 @@ exports.addlibrary = async (req, res) => {
     const ownerId = req.user.id;
 
     // Get all required fields from request body
-    const { library_name, address, pin, longitude, latitude } = req.body;
+    const { library_name, address, pin,city, longitude, latitude,about} = req.body;
 
     const location = {
       type: "Point",
@@ -77,14 +77,15 @@ exports.addlibrary = async (req, res) => {
     });
      // Create the price entry (you can modify this according to your price input requirements)
     const price = await Price.create({
-      libraryId: null, // This will be updated later
+       // This will be updated later
       price: {
-        oneHour: 0, // Set default values or get from request body
-        twoHours: 0,
-        oneDay: 0,
-        twoDays: 0,
-        oneWeek: 0,
-        oneMonth: 0,
+        libraryId :null,
+        oneHour: 10, // Set default values or get from request body
+        twoHours: 20,
+        oneDay: 30,
+        twoDays: 50,
+        oneWeek: 60,
+        oneMonth: 70,
       }
     });
 
@@ -93,15 +94,17 @@ exports.addlibrary = async (req, res) => {
       owner_Id: ownerId,
       library_name,
       pin,
+      city,
       address,
       location,
       thumbnail: thumbnailImage.secure_url,
+      about,
       otherLibraryData: seat._id,
       
       priceAccordingToDuration : price._id,
     });
 
-    
+
     
 
     return res.status(200).json({

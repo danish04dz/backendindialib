@@ -20,6 +20,11 @@ const librarySchema = new mongoose.Schema({
         type :String,
         required : true,
     },
+    city : {
+        type : String,
+        required : true,
+
+    },
     thumbnail : {
         type :String
     },
@@ -29,6 +34,11 @@ const librarySchema = new mongoose.Schema({
             type: [Number], // [longitude, latitude]
             required: true
         }
+    },
+    about : {
+        type: String,
+        required : true,
+
     },
     otherLibraryData : {
         type :  mongoose.Schema.Types.ObjectId,
