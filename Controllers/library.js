@@ -80,12 +80,12 @@ exports.addlibrary = async (req, res) => {
        // This will be updated later
       price: {
         libraryId :null,
-        oneHour: 10, // Set default values or get from request body
-        twoHours: 20,
-        oneDay: 30,
-        twoDays: 50,
-        oneWeek: 60,
-        oneMonth: 70,
+        oneHour: null, // Set default values or get from request body
+        twoHours: null,
+        oneDay: null,
+        twoDays: null,
+        oneWeek: null,
+        oneMonth: null,
       }
     });
 

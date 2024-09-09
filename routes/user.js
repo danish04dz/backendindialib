@@ -32,6 +32,13 @@ router.get("/admin", auth, isAdmin, (req,res) => {
     });
 });
 
+router.get("/owner", auth, isAdmin, (req,res) => {
+    res.json({
+        success:true,
+        message:'Welcome to the Protected route for Admin',
+    });
+});
+
 
 // router.get("/getEmail" , auth, async (req,res) => {
 

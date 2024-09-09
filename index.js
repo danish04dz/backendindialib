@@ -64,6 +64,7 @@ app.use("/api/v1/profile", profileRoutes);
 const libraryRoutes = require("./routes/library");
 app.use("/api/v1/", libraryRoutes);
 
+
 const bookings = require("./routes/booking");
 app.use("/api/v1/bookings", bookings);
 

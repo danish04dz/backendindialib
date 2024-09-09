@@ -11,34 +11,28 @@ const priceSchema = new mongoose.Schema({
     price: {
         oneHour: {
             type: Number,
-            required: true,
-            min: 0, 
+            
              // Optional: You can set a minimum value
         },
         twoHours: {
             type: Number,
-            required: true,
-            min: 0,
+            
         },
         oneDay: {
             type: Number,
-            required: true,
-            min: 0,
+            
         },
         twoDays: {
             type: Number,
-            required: true,
-            min: 0,
+            
         },
         oneWeek: {
             type: Number,
-            required: true,
-            min: 0,
+            
         },
         oneMonth: {
             type: Number,
-            required: true,
-            min: 0,
+            
         }
     }
 });

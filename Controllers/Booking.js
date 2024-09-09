@@ -189,7 +189,7 @@ exports.manageBookingByOwner = async (req, res) => {
     }
 
     // Update the booking status (e.g., "Completed", "Canceled")
-    const validStatuses = ["Pending", "Completed", "Canceled"];
+    const validStatuses = ["Pending","Confirmed", "Completed", "Canceled"];
     if (!validStatuses.includes(newStatus)) {
       return res.status(400).json({
         success: false,
