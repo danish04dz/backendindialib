@@ -163,9 +163,10 @@ exports.nearestlibrary = async (req, res) => {
 
   try {
     // coordinates: [longitude, latitude] getting cordinates from body
-
-    const longitude = req.body.longitude;
-    const latitude = req.body.latitude;
+    const longitude = parseFloat(req.body.longitude);
+    const latitude = parseFloat(req.body.latitude);
+   
+    
 
     if (!longitude || !latitude) {
       return res.status(400).json({
@@ -179,7 +180,7 @@ exports.nearestlibrary = async (req, res) => {
     const libraries  = await Library.aggregate([
       {
         $geoNear : {
-            near : {type : "Point",coordinates : [parseFloat(latitude),parseFloat(longitude)]},
+            near : {type : "Point",coordinates : [longitude,latitude]},
             key : "location",
             maxDistance : parseInt(2)*1609, // 1 mile radius
             distanceField : "dist.calculated",
@@ -208,7 +209,7 @@ exports.nearestlibrary = async (req, res) => {
     });
 
     res.status(200).send({
-      succes : true,
+      success : true,
       msg: "nerest library is..",
       data :librariesWithDistanceInKm 
     })
