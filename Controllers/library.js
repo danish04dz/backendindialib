@@ -95,8 +95,10 @@ exports.addlibrary = async (req, res) => {
       pin,
       address,
       location,
-      otherLibraryData: seat._id,
       thumbnail: thumbnailImage.secure_url,
+      otherLibraryData: seat._id,
+      
+      priceAccordingToDuration : price._id,
     });
 
     
