@@ -163,12 +163,13 @@ exports.nearestlibrary = async (req, res) => {
 
   try {
     // coordinates: [longitude, latitude] getting cordinates from body
-    const longitude = parseFloat(req.body.longitude);
     const latitude = parseFloat(req.body.latitude);
+    const longitude = parseFloat(req.body.longitude);
+   
    
     
 
-    if (!longitude || !latitude) {
+    if ( !latitude || !longitude) {
       return res.status(400).json({
         success: false,
         message: "Longitude and latitude are required",
@@ -180,7 +181,7 @@ exports.nearestlibrary = async (req, res) => {
     const libraries  = await Library.aggregate([
       {
         $geoNear : {
-            near : {type : "Point",coordinates : [longitude,latitude]},
+            near : {type : "Point",coordinates : [latitude,longitude]},
             key : "location",
             maxDistance : parseInt(2)*1609, // 1 mile radius
             distanceField : "dist.calculated",
