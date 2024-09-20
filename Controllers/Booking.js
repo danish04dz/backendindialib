@@ -180,8 +180,17 @@ exports.manageBookingByOwner = async (req, res) => {
       });
     }
 
+    // Check if the library exists and has an owner (use 'owner_Id' instead of 'owner')
+    if (!library.owner_Id) {
+      console.error("Library owner is undefined or null:", library);
+      return res.status(500).json({
+        success: false,
+        message: "Library owner information is missing.",
+      });
+    }
+
     // Check if the current user is the owner of the library
-    if (library.owner.toString() !== ownerId) {
+    if (library.owner_Id.toString() !== ownerId) {
       return res.status(403).json({
         success: false,
         message: "You are not authorized to manage this booking.",
@@ -189,7 +198,7 @@ exports.manageBookingByOwner = async (req, res) => {
     }
 
     // Update the booking status (e.g., "Completed", "Canceled")
-    const validStatuses = ["Pending","Confirmed", "Completed", "Canceled"];
+    const validStatuses = ["Pending", "Confirmed", "Completed", "Canceled"];
     if (!validStatuses.includes(newStatus)) {
       return res.status(400).json({
         success: false,
@@ -226,6 +235,8 @@ exports.manageBookingByOwner = async (req, res) => {
 };
 
 
+
+
 // ==============================================
 // ===                                      ====
 // ==   Get All Bookings by Library Owner    ====
@@ -234,11 +245,14 @@ exports.manageBookingByOwner = async (req, res) => {
 
 exports.getBookingsByOwner = async (req, res) => {
   try {
-    const ownerId = req.user.id; // Assuming user is authenticated as the owner
+    const ownerId = req.user.id;
+    console.log(`Fetching bookings for owner ID: ${ownerId}`);
 
     // Find all libraries owned by the current owner
-    const libraries = await Library.find({ owner_Id: ownerId });
-    if (libraries.length === 0) {
+    const libraries = await Library.find({ owner_Id: ownerId }).select('_id');
+    console.log(`Found libraries: ${libraries}`);
+
+    if (!libraries.length) {
       return res.status(404).json({
         success: false,
         message: "No libraries found for this owner.",
@@ -247,24 +261,38 @@ exports.getBookingsByOwner = async (req, res) => {
 
     // Extract library IDs
     const libraryIds = libraries.map(library => library._id);
+    console.log(`Library IDs: ${libraryIds}`);
 
-    // Find all bookings for these libraries
+    // Find all bookings for these libraries and populate necessary fields
     const bookings = await Booking.find({ library: { $in: libraryIds } })
-      .populate('user', 'name email') // Populate user details if needed
-      .populate('seat'); // Populate seat details if needed
+      .populate({
+        path: 'user',
+        select: 'name email',
+      })
+      .populate({
+        path: 'seat',
+        select: 'seatnumber',
+      })
+      .populate({
+        path: 'library',
+        select: 'library_name', // Populate the library name
+      });
+
+    console.log(`Found bookings: ${JSON.stringify(bookings)}`);
 
     return res.status(200).json({
       success: true,
       bookings,
     });
   } catch (error) {
-    console.error("Error fetching bookings by owner:", error);
+    console.error("Error fetching bookings by owner:", error.message, error.stack);
     return res.status(500).json({
       success: false,
-      message: "Unable to fetch bookings, please try again later.",
+      message: `Unable to fetch bookings: ${error.message}`,
     });
   }
 };
+
 
 // ==============================================
 // ===                                      ====

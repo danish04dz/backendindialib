@@ -75,3 +75,73 @@ exports.getAllUserDetails = async (req, res) => {
       })
     }
   }
+  exports.getAllUsers = async (req, res) => {
+    try {
+        // Find all users and project only their name, email, and role fields
+        const users = await User.find({}, { name: 1, email: 1, role: 1 });
+
+        // If users are found, return the list of users
+        return res.status(200).json({
+            success: true,
+            message: "List of all users fetched successfully",
+            users
+        });
+    } catch (error) {
+        // In case of an error, return a failure message and error details
+        return res.status(500).json({
+            success: false,
+            message: "Error fetching user list",
+            error: error.message
+        });
+    }
+};
+
+
+
+// update role [Student,Owner] of the user by admin
+
+// Controller to update the role of a user by admin
+exports.updateRole = async (req, res) => {
+  try {
+    const { userId, newRole } = req.body;
+
+    // Validate the role
+    const validRoles = ["Student", "Owner"];
+    if (!validRoles.includes(newRole)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid role. Valid roles are 'Student' or 'Owner'."
+      });
+    }
+
+    // Find the user by ID and update their role
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { role: newRole },
+      { new: true, runValidators: true }
+    );
+
+    // If user not found, return error
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    // Respond with success and the updated user details
+    return res.status(200).json({
+      success: true,
+      message: "User role updated successfully",
+      user
+    });
+
+  } catch (error) {
+    // Handle errors and return error response
+    return res.status(500).json({
+      success: false,
+      message: "Error updating user role",
+      error: error.message
+    });
+  }
+};

@@ -420,3 +420,29 @@ exports.addPrice = async (req, res) => {
     });
   }
 };
+
+
+
+// ==============================================
+// ===                                      ====
+// ==          viwe all registerd library by admin           ====
+// ==                                       ====
+// =============================================
+
+
+exports.allLibrary = async (req, res) => {
+  try {
+    const libraries = await Library.find(); // Fetch all registered libraries
+    return res.status(200).json({
+      success: true,
+      libraries,
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: 'Failed to retrieve libraries',
+      error: error.message,
+    });
+  }
+};
